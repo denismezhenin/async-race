@@ -1,0 +1,33 @@
+.button {
+    cursor: pointer;
+
+    background-color: $second-color;
+    border: none;
+    padding: 5px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+
+    &-light {
+        color: $second-color;
+        background: $button-light;
+        border: 4px solid #A63728;
+        border-radius: 34px;
+    }
+
+    &-transpired {
+        color: #FFFFFF;
+        background: #BD6054;
+        box-shadow: 0px 4px 9px rgba(129, 41, 25, 0.6);
+        border-radius: 55px;
+    }
+
+    &-second-colored {
+        color: #FFFFFF;
+        background: #B3564A;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), inset 0px -9px 16px rgba(159, 40, 24, 0.52);
+        border-radius: 106px;
+    }
+}
+
+

@@ -1,0 +1,18 @@
+
+ body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: $max-width;
+    min-height: 100vh;
+    margin: 0 auto;
+    background: #524340;    
+}
+
+.wrapper {
+    max-width: $max-width;
+    padding: 20px 40px;
+}
+

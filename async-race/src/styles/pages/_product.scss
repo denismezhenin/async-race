@@ -1,0 +1,120 @@
+.product__container {
+  width: 100%;
+  height: fit-content;
+  background: $main-color
+}
+.product-path {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  &__link {
+    color: #FFF;
+  }
+
+  span {
+    color: $second-color;
+  }
+}
+.product-about__container {
+  width: 100%;
+  border-radius: 1rem;
+  background: rgba(24, 26, 28, 0.5);
+  overflow: hidden;
+}
+.product-about__title {
+  width: 100%;
+  text-align: center;
+  background: #B2564A;
+}
+.about-product__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-size: 150%;
+  color: #FFF;
+}
+.description__container {
+  display: flex;
+  gap: 0.5rem;
+  padding: 10px;
+}
+.product-photo__container {
+  display: flex;
+}
+.small-photo__img {
+  width: 90%;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+  &:hover{
+    transform: scale(1.2);
+  }
+}
+.product-photo__container {
+  width: 40%;
+  display: flex;
+}
+.product-small-photo {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 25%;
+}
+.product-large-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70%;
+}
+.large-photo__img {
+  width: 90%;
+}
+.product-info {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+.info__container {
+  width: 100%;
+  margin: 1% auto;
+  background: #B2564A;
+  border-radius: 33px 33px 33px 33px;
+  overflow: hidden;
+  text-align: center;
+}
+.product-info__title {
+  margin: 0;
+  padding: 0.7%;
+  text-align: center;
+  color: #FFF;
+  background: #A54336;
+}
+.product-info__content {
+  margin: 0;
+  padding: 3px;
+  color: #d2b06f;
+}
+.product-price__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  text-align: center;
+}
+.product-price__button {
+  width: 100%;
+  padding: 7% 0;
+  margin: 0.5rem auto;
+  font-size: 60%;
+}
+.product-price {
+  width: 90%;
+  font-size: 200%;
+  color: wheat;
+  text-shadow: 0 0 10px rgb(184 24 24), 0 0 20px red, 0 0 30px red, 0 0 40px red;
+}

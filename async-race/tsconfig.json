@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "ES2016",
+    "allowJs": true
+  },
+  "include": ["src/**/*", "src/tests/sum.js"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

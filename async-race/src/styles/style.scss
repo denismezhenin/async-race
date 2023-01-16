@@ -1,0 +1,18 @@
+@charset "UTF-8";
+@import
+  'abstracts/variables',
+  'abstracts/mixins';
+@import
+  'base/normalize',
+  'base/base',
+  'base/fonts';
+@import 
+  'layouts/footer',
+  'layouts/header';
+@import 
+  'components/buttons';
+@import 
+  'pages/main',
+  'pages/cart',
+  'pages/product';
+

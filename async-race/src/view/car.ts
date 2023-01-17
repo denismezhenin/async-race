@@ -11,18 +11,55 @@ export const renderCarField = () => {
   const carName = document.createElement('span');
   const flagImg = document.createElement('img');
   const carSvg = document.createElement('div');
+  const carTrackWrapper = document.createElement('div');
   selectButton.textContent = 'select';
-  resetButton.textContent = 'reset';
-  startButton.textContent = 'A';
   resetButton.textContent = 'B';
+  startButton.textContent = 'A';
+  removeButton.textContent = 'reset';
+  startButton.addEventListener('click', startAnimation, { once: true })
   firstButtonRowWrapper.append(selectButton, removeButton);
   secondButtonRowWrapper.append(startButton, resetButton);
   (carSvg).innerHTML = carSvg2
-  li.append(firstButtonRowWrapper, secondButtonRowWrapper, carSvg)
+  flagImg.src = 'flag.svg'
+  carTrackWrapper.append(carSvg, flagImg)
+  carTrackWrapper.classList.add('item__car-wrapper')
+  carSvg.classList.add('item__car-wrapper-car')
+  flagImg.classList.add('item__car-wrapper-flag')
+  li.append(firstButtonRowWrapper, secondButtonRowWrapper, carTrackWrapper)
+  li.classList.add('car-list__item', 'item')
   return li
 }
 
-// const 
+let animationStart
+let requestId
+function startAnimation() {
+  requestId = window.requestAnimationFrame(animate)
+ 
+  // animationButton.style.opacity = 0
+ }
+
+
+
+ function animate(timestamp) {
+  const animationBox = tsQuerySelector(document, '.item__car-wrapper-car') 
+  if (!animationStart) {
+    animationStart = timestamp
+  }
+ 
+  const progress = timestamp - animationStart
+ 
+  animationBox.style.transform = `translateX(${progress / 5}px)`
+ 
+  const x = animationBox.getBoundingClientRect().x + 100
+ 
+  // 6px - scrollbar width
+  if (x <= window.innerWidth - 6) {
+    window.requestAnimationFrame(animate)
+  } else {
+    window.cancelAnimationFrame(requestId)
+  }
+ }
+
 
 
 
@@ -36,7 +73,7 @@ export const renderCarField = () => {
 
 
 const carSvg2 = `<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-width="1280.000000pt" height="640.000000pt" viewBox="0 0 1280.000000 640.000000"
+width="128.000000px" height="64.000000px" viewBox="0 0 1280.000000 640.000000"
 preserveAspectRatio="xMidYMid meet">
 <g transform="translate(0.000000,640.000000) scale(0.100000,-0.100000)"
 fill="#000000" stroke="none">

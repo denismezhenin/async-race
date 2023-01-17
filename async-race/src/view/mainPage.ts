@@ -26,7 +26,7 @@ export const mainPageHTML = `
     )
   </p>
   <span class="garage__page-number">Page #</span>
-  <ul class="garage__car-list"></ul>
+  <ul class="garage__car-list car-list"></ul>
   <button class="garage__button button">Prev</button>
   <button class="garage__button button">Next</button>
 </section>

@@ -28,9 +28,9 @@ const config = {
       template: "./src/index.html",
     }),
     new CleanWebpackPlugin(),
-    // new CopyWebpackPlugin({
-    //   patterns: [{ from: path.resolve(__dirname, 'src/assets'), to: '.' }],
-    // }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: path.resolve(__dirname, 'src/assets'), to: '.' }],
+    }),
 
   ],
   module: {

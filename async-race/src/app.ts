@@ -1,4 +1,4 @@
-// import './styles/style.scss';
+import './styles/style.scss';
 import { headerHTML } from "./view/header";
 import { mainPageHTML } from "./view/mainPage";
 import { tsQuerySelector } from "./components/helpers";

@@ -30,4 +30,4 @@ export const mainPageHTML = `
   <button class="garage__button button">Prev</button>
   <button class="garage__button button">Next</button>
 </section>
-`
+`;

@@ -1,76 +1,107 @@
-import { tsQuerySelector } from "../components/helpers";
+import { tsQuerySelector } from '../components/helpers';
+import { createCar, getCars } from '../utils/utils';
 
 export const renderCarField = () => {
-  const li = document.createElement('li');
-  const selectButton = document.createElement('button');
-  const removeButton = document.createElement('button');
-  const firstButtonRowWrapper = document.createElement('div');
-  const secondButtonRowWrapper = document.createElement('div');
-  const startButton = document.createElement('button');
-  const resetButton = document.createElement('button');
-  const carName = document.createElement('span');
-  const flagImg = document.createElement('img');
-  const carSvg = document.createElement('div');
-  const carTrackWrapper = document.createElement('div');
-  selectButton.textContent = 'select';
-  resetButton.textContent = 'B';
-  startButton.textContent = 'A';
-  removeButton.textContent = 'reset';
-  startButton.addEventListener('click', startAnimation, { once: true })
-  firstButtonRowWrapper.append(selectButton, removeButton);
-  secondButtonRowWrapper.append(startButton, resetButton);
-  (carSvg).innerHTML = carSvg2
-  flagImg.src = 'flag.svg'
-  carTrackWrapper.append(carSvg, flagImg)
-  carTrackWrapper.classList.add('item__car-wrapper')
-  carSvg.classList.add('item__car-wrapper-car')
-  flagImg.classList.add('item__car-wrapper-flag')
-  li.append(firstButtonRowWrapper, secondButtonRowWrapper, carTrackWrapper)
-  li.classList.add('car-list__item', 'item')
-  return li
+    const li = document.createElement('li');
+    const selectButton = document.createElement('button');
+    const removeButton = document.createElement('button');
+    const firstButtonRowWrapper = document.createElement('div');
+    const secondButtonRowWrapper = document.createElement('div');
+    const startButton = document.createElement('button');
+    const resetButton = document.createElement('button');
+    const carName = document.createElement('span');
+    const flagImg = document.createElement('img');
+    const carSvg = document.createElement('div');
+    const carTrackWrapper = document.createElement('div');
+    selectButton.textContent = 'select';
+    resetButton.textContent = 'B';
+    startButton.textContent = 'A';
+    removeButton.textContent = 'reset';
+    startButton.classList.add('start');
+    firstButtonRowWrapper.append(selectButton, removeButton, carName);
+    secondButtonRowWrapper.append(startButton, resetButton);
+    carSvg.innerHTML = carSvg2;
+    flagImg.src = 'flag.svg';
+    carTrackWrapper.append(carSvg, flagImg);
+    carTrackWrapper.classList.add('item__car-wrapper');
+    carSvg.classList.add('item__car-wrapper-car');
+    flagImg.classList.add('item__car-wrapper-flag');
+    li.append(firstButtonRowWrapper, secondButtonRowWrapper, carTrackWrapper);
+    li.classList.add('car-list__item', 'item');
+    return li;
+};
+
+// let animationStart
+// let requestId
+// function startAnimation() {
+//   requestId = window.requestAnimationFrame(animate)
+
+//   // animationButton.style.opacity = 0
+//  }
+
+//  function animate(timestamp) {
+//   const animationBox = tsQuerySelector(document, '.item__car-wrapper-car')
+//   if (!animationStart) {
+//     animationStart = timestamp
+//   }
+
+//   const progress = timestamp - animationStart
+
+//   animationBox.style.transform = `translateX(${progress / 5}px)`
+
+//   const x = animationBox.getBoundingClientRect().x + 100
+
+//   // 6px - scrollbar width
+//   if (x <= window.innerWidth - 6) {
+//     window.requestAnimationFrame(animate)
+//   } else {
+//     window.cancelAnimationFrame(requestId)
+//   }
+//  }
+
+function quad(timeFraction: number) {
+    return timeFraction ** 2;
 }
 
-let animationStart
-let requestId
-function startAnimation() {
-  requestId = window.requestAnimationFrame(animate)
- 
-  // animationButton.style.opacity = 0
- }
+function draw(progress: number, li: Element) {
+    const car = tsQuerySelector(li, '.item__car-wrapper-car');
+    const distance = li.getBoundingClientRect().width;
+    // const carWidth =  car.getBoundingClientRect().width
+    car.style.transform = `translate3d(${progress * distance * 0.85}px, 20px, 0)`;
+}
 
+function animate(timing: Function, draw: Function, duration: number, li: Element) {
+    const start = performance.now();
 
+    requestAnimationFrame(function animateCar(time) {
+        // timeFraction изменяется от 0 до 1
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) timeFraction = 1;
 
- function animate(timestamp) {
-  const animationBox = tsQuerySelector(document, '.item__car-wrapper-car') 
-  if (!animationStart) {
-    animationStart = timestamp
-  }
- 
-  const progress = timestamp - animationStart
- 
-  animationBox.style.transform = `translateX(${progress / 5}px)`
- 
-  const x = animationBox.getBoundingClientRect().x + 100
- 
-  // 6px - scrollbar width
-  if (x <= window.innerWidth - 6) {
-    window.requestAnimationFrame(animate)
-  } else {
-    window.cancelAnimationFrame(requestId)
-  }
- }
+        // вычисление текущего состояния анимации
+        const progress = timing(timeFraction);
 
+        draw(progress, li); // отрисовать её
 
+        if (timeFraction < 1) {
+            requestAnimationFrame(animateCar);
+        }
+    });
+}
 
+document.addEventListener('click', (e) => {
+    if (!(e.target instanceof HTMLElement)) return;
+    const { target } = e;
+    if (target.classList.contains('start')) {
+        const li = target.closest('.item');
+        if (!li) return;
+        animate(quad, draw, 400, li);
+    }
+});
 
+// createCar({name: 'BMW', color: '#FFF'})
 
-
-
-
-
-
-
-
+// getCars();
 
 const carSvg2 = `<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
 width="128.000000px" height="64.000000px" viewBox="0 0 1280.000000 640.000000"
@@ -163,4 +194,4 @@ l26 0 -7 123 c-10 179 -15 207 -36 207 -10 0 -63 -48 -119 -107z"/>
 <path d="M11035 1801 c-7 -12 -23 -144 -29 -243 -4 -77 -4 -78 19 -78 45 0
 130 22 193 51 l64 29 -19 23 c-65 82 -198 227 -209 227 -7 0 -15 -4 -19 -9z"/>
 </g>
-</svg>`
+</svg>`;

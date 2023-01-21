@@ -2,16 +2,16 @@
 
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-// const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin")
 
 const isProduction = process.env.NODE_ENV === "production";
 const CopyWebpackPlugin = require("copy-webpack-plugin")
+const EslingPlugin = require('eslint-webpack-plugin');
 
-// const stylesHandler = isProduction
-//   ? MiniCssExtractPlugin.loader
-//   : "style-loader";
+const stylesHandler = isProduction
+  ? MiniCssExtractPlugin.loader
+  : "style-loader";
 
 const config = {
   entry: "./src/app.ts",
@@ -31,7 +31,7 @@ const config = {
     new CopyWebpackPlugin({
       patterns: [{ from: path.resolve(__dirname, 'src/assets'), to: '.' }],
     }),
-
+    new EslingPlugin({ extensions: 'ts' })
   ],
   module: {
     rules: [
@@ -84,9 +84,6 @@ module.exports = () => {
 
   if (isProduction) {
     config.mode = "production";
-
-    // config.plugins.push(new MiniCssExtractPlugin());
-
     config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = "development";

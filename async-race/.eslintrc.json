@@ -4,7 +4,7 @@
     "es2021": true
   },
   "extends": [
-    "eslint:recommended",
+    // "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "airbnb",
@@ -19,7 +19,7 @@
     // "ecmaFeatures": {
     //   "jsx": true
     // },
-    "ecmaVersion": "latest",
+    "ecmaVersion": 13,
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "import", "prettier"],
@@ -41,6 +41,10 @@
     "no-console": 0,
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-explicit-any": 2,
     "prettier/prettier": [

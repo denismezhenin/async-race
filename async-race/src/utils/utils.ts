@@ -1,9 +1,9 @@
 import { UTILS } from '../components/constants';
 
-// import { UTILS }
 
 export const getCars = async (page: number, limit = '7') => {
     const response = await fetch(`${UTILS.baseUrl}${UTILS.carPath}?_page=${page}&_limit=${limit}`);
+    // response.headers
     const data = await response.json();
     // console.log(data)
     return data;
@@ -66,9 +66,53 @@ export const switchCarToDrive = async (body: { id: string }) => {
         return data;
     } catch (e: unknown) {
         if (e instanceof Error) {
-            // console.log(e.name);
-            // console.log(e.message);
             return e;
         }
     }
 };
+
+export const getWinner = async (id: string) => {
+    const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}/${id}`);
+    const data = await response.json();
+    return data;
+};
+
+export const getWinners = async (sort: 'wins'|'time', order : 'ASC'|'DESC', page = '0', limit = '10' ) => {
+    const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`);
+    const data = await response.json();
+    // console.log(data)
+    return data;
+};
+
+export const createWinner = async (body: { id: string; wins: number; time: number }) => {
+    const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+    const winner = await response.json();
+    return winner;
+};
+
+export const deleteWinner = async (id: string) => {
+    const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}/${id}`, {
+        method: 'DELETE',
+    });
+    const winner = await response.json();
+    return winner;
+};
+
+export const updateWinner = async (id: string, body: { nwins: number; time: number }) => {
+    const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+    const winner = await response.json();
+    return winner;
+};
+

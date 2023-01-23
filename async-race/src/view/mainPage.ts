@@ -32,4 +32,16 @@ export const mainPageHTML = `
   <button class="garage__button button prev">Prev</button>
   <button class="garage__button button next">Next</button>
 </section>
+<section>
+<section class="main__winners" style="display: none;">
+  <ul class="winners-list">
+    <li class="winners-list__header">
+      <span class="winners-list__header-index">№</span>
+      <span class="winners-list__header-image">Car image</span>
+      <span class="winners-list__header-name">Name</span>
+      <span class="winners-list__header-wins wins desk">Wins</span>
+      <span class="winners-list__header-time time desk">Best time</span>
+    </li>
+  </ul>
+</section>
 `;

@@ -1,5 +1,5 @@
 import { tsQuerySelector } from '../components/helpers';
-import { createCar, updateCar } from '../utils/utils';
+import { createCar, updateCar } from '../utils/api';
 
 const updateCarForm = tsQuerySelector<HTMLFormElement>(document, '.update-car__form');
 

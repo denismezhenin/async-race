@@ -1,11 +1,20 @@
 // import { page } from '../app';
 import { tsQuerySelector, tsQuerySelectorAll } from '../components/helpers';
 import { state, stopCarsArray } from '../components/state';
-import { changeCarStatus, checkCarStatus, createCar, deleteCar, getCar, getCars, switchCarToDrive } from '../utils/utils';
+import {
+    changeCarStatus,
+    checkCarStatus,
+    createCar,
+    deleteCar,
+    getCar,
+    getCars,
+    switchCarToDrive,
+} from '../utils/api';
 import { renderCar } from './renderCar';
 import { renderGarage } from './renderGarage';
 import { renderWinnerList, sortWinners } from './renderWinners';
 import { UTILS } from '../components/constants';
+import { getSuccess, getSuccessPromise } from './race';
 
 export const renderCarField = (id: string, color: string, name: string) => {
     const li = document.createElement('li');
@@ -102,12 +111,17 @@ const animate = async (timing: Function, draw: Function, duration: number, li: E
         delete state.stop[li.id];
     });
     const carResponseStatus = await switchCarToDrive({ id: li.id });
-    if (carResponseStatus instanceof Error) {
+    if (carResponseStatus.success === false) {
         state.stop[li.id] = li.id;
         setTimeout(() => {
             delete state.stop[li.id];
         }, 1000);
     }
+    return {
+        success: carResponseStatus,
+        id: li.id,
+        time: duration,
+    };
     // console.log(carResponseStatus)
 };
 
@@ -181,52 +195,68 @@ document.addEventListener('click', async (e) => {
     if (target.classList.contains('next')) {
         // if (state.page === 0) return;
         state.page += 1;
-        console.log(state.page)
+        console.log(state.page);
         renderGarage(state.page);
     }
 
     if (target.classList.contains('wins')) {
-        sortWinners('wins', target)
+        sortWinners('wins', target);
     }
 
     if (target.classList.contains('time')) {
-        sortWinners('time', target)
-    
+        sortWinners('time', target);
     }
     if (target.classList.contains('game-controls__race')) {
-       const carArray = Array.from(tsQuerySelectorAll(document, '.car-list__item'));
-       const carIDArray = carArray.map(el => el.id)
-       let requestsToStart = carArray.map(id => fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${id}&status=started`));  
-    //    let requestsToDrive= carArray.map(id => fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${id}&status=drive`));  
-       const startedResponse = await Promise.all(requestsToStart)
-    //    const startedArray = await startedResponse.json()
+        const carArray = Array.from(tsQuerySelectorAll(document, '.car-list__item'));
+        const carIDArray = carArray.map((el) => el.id);
+        // console.log(carArray)
+        // console.log(carIDArray)
+        const requestsToStart = carIDArray.map((el) => {
+            // return fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${el}&status=started`)
+        
+            return changeCarStatus({ id: el, status: 'started' })
+        });
+        // console.log(requestsToStart)
+        const startedResponse = await Promise.all(requestsToStart);
+        // const requestsToDrive = carIDArray.map(id => Promise.resolve(fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${id}&status=drive`, {
+        //     method: 'PATCH',
+        // })));
+        // console.log(requestsToDrive)
+        // console.log(startedResponse);
+        const promiseArr = []
+        // const startedArray = await startedResponse.json()
         startedResponse.forEach(async (el, index) => {
-            const resp = await el.json();
-        const duration = resp.distance / resp.velocity;
-        animate(quad, draw, duration, carArray[index]);
-       })
-    //    const drive = await Promise.all(requestsToDrive)
+            // console.log(el)
+            // const resp = await el.json();
+            const duration = el.distance / el.velocity;
+            promiseArr.push(animate(quad, draw, duration, carArray[index]));
+        });
+        // console.log(promiseArr)
+        const drive = await getSuccessPromise(promiseArr, carIDArray);
+        // const drive2 = await Promise.allSettled(promiseArr)
+        // console.log(drive)
+        //    console.log(drive2)
+        //    console.log(promiseArr)
     }
     if (target.classList.contains('game-controls__reset')) {
         const carArray = Array.from(tsQuerySelectorAll(document, '.car-list__item'));
-        carArray.forEach( async (el) => {
+        carArray.forEach(async (el) => {
             state.stop[el.id] = el.id;
             await changeCarStatus({ id: el.id, status: 'stopped' });
             delete state.stop[el.id];
             const car = tsQuerySelector(el, '.item__car-wrapper-car');
             car.style.transform = `translate3d(0px, 20px, 0)`;
-        })
+        });
     }
 
     if (target.classList.contains('garage-button')) {
-        tsQuerySelector(document, '.main__winner').style.display = "none";
-        tsQuerySelector(document, 'main__garage').style.display = "";
-    }    
+        tsQuerySelector(document, '.main__winners').style.display = 'none';
+        tsQuerySelector(document, '.main__garage').style.display = '';
+    }
     if (target.classList.contains('winners-button')) {
-        tsQuerySelector(document, '.main__winner').style.display = "";
-        tsQuerySelector(document, 'main__garage').style.display = "none";
-    }    
-
+        tsQuerySelector(document, '.main__winners').style.display = '';
+        tsQuerySelector(document, '.main__garage').style.display = 'none';
+    }
 });
 
 

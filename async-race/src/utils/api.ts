@@ -1,6 +1,5 @@
 import { UTILS } from '../components/constants';
 
-
 export const getCars = async (page: number, limit = '7') => {
     const response = await fetch(`${UTILS.baseUrl}${UTILS.carPath}?_page=${page}&_limit=${limit}`);
     // response.headers
@@ -57,28 +56,19 @@ export const changeCarStatus = async (body: { id: string; status: string }) => {
 };
 
 export const switchCarToDrive = async (body: { id: string }) => {
-    try {
-        const response = await fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${body.id}&status=drive`, {
-            method: 'PATCH',
-            body: JSON.stringify(body),
-        });
-        const data = await response.json();
-        return data;
-    } catch (e: unknown) {
-        if (e instanceof Error) {
-            return e;
-        }
-    }
+    const response = await fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${body.id}&status=drive`, {method: 'PATCH'}).catch();
+    return response.status !== 200 ? false : { ...(await response.json()) };
 };
 
 export const getWinner = async (id: string) => {
     const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}/${id}`);
-    const data = await response.json();
-    return data;
+    return response.status !== 200 ? false : { ...(await response.json()) };
 };
 
-export const getWinners = async (sort: 'wins'|'time', order : 'ASC'|'DESC', page = '0', limit = '10' ) => {
-    const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`);
+export const getWinners = async (sort: 'wins' | 'time', order: 'ASC' | 'DESC', page = '0', limit = '10') => {
+    const response = await fetch(
+        `${UTILS.baseUrl}${UTILS.winners}?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`
+    );
     const data = await response.json();
     // console.log(data)
     return data;
@@ -104,7 +94,7 @@ export const deleteWinner = async (id: string) => {
     return winner;
 };
 
-export const updateWinner = async (id: string, body: { nwins: number; time: number }) => {
+export const updateWinner = async (id: string, body: { wins: number; time: number }) => {
     const response = await fetch(`${UTILS.baseUrl}${UTILS.winners}/${id}`, {
         method: 'PUT',
         headers: {
@@ -115,4 +105,3 @@ export const updateWinner = async (id: string, body: { nwins: number; time: numb
     const winner = await response.json();
     return winner;
 };
-

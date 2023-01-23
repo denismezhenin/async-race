@@ -3,9 +3,10 @@ import { headerHTML } from './view/header';
 import { mainPageHTML } from './view/mainPage';
 import { tsQuerySelector } from './components/helpers';
 import { renderCarField } from './view/carField';
-import { changeCarStatus, createCar, getCars, updateCar } from './utils/utils';
+import { changeCarStatus, createCar, getCars, updateCar } from './utils/api';
 import { state } from './components/state';
 import { renderGarage } from './view/renderGarage';
+import { renderWinnerList } from './view/renderWinners';
 
 const renderPage = async () => {
     tsQuerySelector(document, '.header').innerHTML = headerHTML;
@@ -42,8 +43,9 @@ const renderPage = async () => {
         const { id } = updateCarForm.dataset;
         await updateCar(id, { name: carName, color: carColor });
         renderGarage(state.page);
-    });
 
+    });
+    renderWinnerList('wins', 'DESC')
     // getCars()
 };
 

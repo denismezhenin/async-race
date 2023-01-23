@@ -1,6 +1,6 @@
-import { tsQuerySelector } from "../components/helpers";
-import { getCars } from "../utils/utils";
-import { renderCarField } from "./carField";
+import { tsQuerySelector } from '../components/helpers';
+import { getCars } from '../utils/api';
+import { renderCarField } from './carField';
 
 export const renderGarage = async (page: number) => {
     const carArray = await getCars(page);

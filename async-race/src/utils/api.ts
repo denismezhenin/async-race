@@ -8,7 +8,7 @@ export const getCars = async (page: number, limit = '7') => {
     return data;
 };
 
-export const getCar = async (id: string) => {
+export const getCar = async (id: number) => {
     const response = await fetch(`${UTILS.baseUrl}${UTILS.carPath}/${id}`);
     const data = await response.json();
     return data;

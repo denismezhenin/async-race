@@ -3,9 +3,9 @@ import { tsQuerySelector, tsQuerySelectorAll } from '../components/helpers';
 import { state, stopCarsArray } from '../components/state';
 import {
     changeCarStatus,
-    checkCarStatus,
     createCar,
     deleteCar,
+    deleteWinner,
     getCar,
     getCars,
     switchCarToDrive,
@@ -13,10 +13,11 @@ import {
 import { renderCar } from './renderCar';
 import { renderGarage } from './renderGarage';
 import { renderWinnerList, sortWinners } from './renderWinners';
-import { UTILS } from '../components/constants';
-import { getSuccess, getSuccessPromise } from './race';
+import { raceResponsePromice, UTILS } from '../components/constants';
+import { getSuccessPromise } from './race';
+import { generateRandomCars } from './createRandomCars';
 
-export const renderCarField = (id: string, color: string, name: string) => {
+export const renderCarField = (id: number, color: string, name: string) => {
     const li = document.createElement('li');
     const selectButton = document.createElement('button');
     const removeButton = document.createElement('button');
@@ -28,7 +29,7 @@ export const renderCarField = (id: string, color: string, name: string) => {
     const flagImg = document.createElement('img');
     const carSvg = document.createElement('div');
     const carTrackWrapper = document.createElement('div');
-    li.id = id;
+    li.id = `${id}`;
     li.dataset.color = color;
     selectButton.textContent = 'select';
     resetButton.textContent = 'B';
@@ -164,9 +165,10 @@ document.addEventListener('click', async (e) => {
     if (target.classList.contains('remove')) {
         const li = target.closest('.item');
         if (!li) return;
-        console.log('click');
+        // console.log('click');
         await deleteCar(li.id);
-        console.log('click2');
+        await deleteWinner(li.id)
+        // console.log('click2');
         renderGarage(state.page);
     }
     if (target.classList.contains('reset')) {
@@ -208,7 +210,7 @@ document.addEventListener('click', async (e) => {
     }
     if (target.classList.contains('game-controls__race')) {
         const carArray = Array.from(tsQuerySelectorAll(document, '.car-list__item'));
-        const carIDArray = carArray.map((el) => el.id);
+        const carIDArray: string[] = carArray.map((el) => el.id);
         // console.log(carArray)
         // console.log(carIDArray)
         const requestsToStart = carIDArray.map((el) => {
@@ -223,7 +225,7 @@ document.addEventListener('click', async (e) => {
         // })));
         // console.log(requestsToDrive)
         // console.log(startedResponse);
-        const promiseArr = []
+        const promiseArr: Array<raceResponsePromice> = []
         // const startedArray = await startedResponse.json()
         startedResponse.forEach(async (el, index) => {
             // console.log(el)
@@ -257,10 +259,11 @@ document.addEventListener('click', async (e) => {
         tsQuerySelector(document, '.main__winners').style.display = '';
         tsQuerySelector(document, '.main__garage').style.display = 'none';
     }
+    if (target.classList.contains('game-controls__generate')) {
+        const newCars = generateRandomCars(100)
+        newCars.forEach(async (el) => await createCar(el))
+        renderGarage(state.page)
+        // newCars.forEach(async (el) => await createCar(el))
+    }
 });
 
-
-
-// createCar({name: 'BMW', color: '#FFF'})
-
-// getCars();

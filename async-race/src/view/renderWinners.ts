@@ -1,16 +1,17 @@
+import { IWinners } from '../components/constants';
 import { tsQuerySelector } from '../components/helpers';
 import { getCar, getWinners } from '../utils/api';
 import { renderCar } from './renderCar';
 
-export const renderWinner = async (id: string, wins: string, time: string, index: number) => {
+export const renderWinner = async (id: number, wins: number, time: number, index: number) => {
     const li = document.createElement('li');
     const winnerCar = document.createElement('div');
     const winnerName = document.createElement('span');
     const winnerIndexNumber = document.createElement('span');
     const winnerNumberOfWins = document.createElement('span');
     const winnerBestTime = document.createElement('span');
-    winnerBestTime.textContent = time;
-    winnerNumberOfWins.textContent = wins;
+    winnerBestTime.textContent = String(time);
+    winnerNumberOfWins.textContent = String(wins);
     winnerIndexNumber.textContent = String(index);
     const car = await getCar(id);
     winnerName.textContent = car.name;
@@ -25,7 +26,7 @@ export const renderWinnerList = async (sort: 'wins' | 'time', order: 'ASC' | 'DE
     const winersList = tsQuerySelector(document, '.winners-list');
     const winnerArr = await getWinners(sort, order);
     console.log(winnerArr)
-    winnerArr.forEach(async (element, index: number) => {
+    winnerArr.forEach(async (element: IWinners, index: number) => {
         const winner = await renderWinner(element.id, element.wins, element.time, index);
         winersList.append(winner);
     });

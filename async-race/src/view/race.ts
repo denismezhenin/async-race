@@ -1,7 +1,8 @@
+import { raceResponsePromice } from '../components/constants';
 import { createWinner, getWinner, getWinners, updateWinner } from '../utils/api';
 
-export const getSuccessPromise = async (arr: [], arrID: []) => {
-    const { success, id, time }: { success: boolean | { success: true }; id: number; time: number } =
+export const getSuccessPromise = async (arr: Array<raceResponsePromice>, arrID: string[]) => {
+    const { success, id, time }: { success: boolean | { success: true }; id: string; time: number } =
         await Promise.race(arr);
     if (!success) return;
     if (!success) {

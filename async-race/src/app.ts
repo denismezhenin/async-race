@@ -32,8 +32,8 @@ const renderPage = async () => {
     updateCarForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(updateCarForm);
-        const carName = formData.get('name');
-        const carColor = formData.get('color');
+        const carName = String(formData.get('name'));
+        const carColor = String(formData.get('color'));
         // if (typeof carName !== 'string' || typeof carColor !== 'string' || typeof updateCarForm.dataset !== 'string') {
         //     return;
         // }
@@ -41,9 +41,9 @@ const renderPage = async () => {
         // console.log('yes');
         // if (typeof updateCarForm.dataset !== 'string') return;
         const { id } = updateCarForm.dataset;
+        if (!id || !carName || !carColor) return
         await updateCar(id, { name: carName, color: carColor });
         renderGarage(state.page);
-
     });
     renderWinnerList('wins', 'DESC')
     // getCars()

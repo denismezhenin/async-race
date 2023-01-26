@@ -1,14 +1,14 @@
 import { UTILS } from '../components/constants';
+import { state } from '../components/state';
 
 export const getCars = async (page: number, limit = '7') => {
     const response = await fetch(`${UTILS.baseUrl}${UTILS.carPath}?_page=${page}&_limit=${limit}`);
-    // response.headers
     const data = await response.json();
-    // console.log(data)
+    state.totalCars = Number(response.headers.get('X-total-Count'));
     return data;
 };
 
-export const getCar = async (id: number) => {
+export const getCar = async (id: string) => {
     const response = await fetch(`${UTILS.baseUrl}${UTILS.carPath}/${id}`);
     const data = await response.json();
     return data;
@@ -56,7 +56,9 @@ export const changeCarStatus = async (body: { id: string; status: string }) => {
 };
 
 export const switchCarToDrive = async (body: { id: string }) => {
-    const response = await fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${body.id}&status=drive`, {method: 'PATCH'}).catch();
+    const response = await fetch(`${UTILS.baseUrl}${UTILS.engine}?id=${body.id}&status=drive`, {
+        method: 'PATCH',
+    }).catch();
     return response.status !== 200 ? false : { ...(await response.json()) };
 };
 
@@ -65,12 +67,12 @@ export const getWinner = async (id: string) => {
     return response.status !== 200 ? false : { ...(await response.json()) };
 };
 
-export const getWinners = async (sort: 'wins' | 'time', order: 'ASC' | 'DESC', page = '0', limit = '10') => {
+export const getWinners = async (sort: 'wins' | 'time', order: 'ASC' | 'DESC', page: number, limit = '10') => {
     const response = await fetch(
         `${UTILS.baseUrl}${UTILS.winners}?_page=${page}&_limit=${limit}&_sort=${sort}&_order=${order}`
     );
     const data = await response.json();
-    // console.log(data)
+    state.totalWinners = Number(response.headers.get('X-total-Count'));
     return data;
 };
 

@@ -1,9 +1,63 @@
 .main {
+  padding: 10px;
 
-}
+  &__game-controls {
+    input {
+      margin-bottom: 10px;
+    }
+  }
 
-.garage {
+  &__winners {
+  margin: 0 auto;
+    width: 80%;
+    max-width: 500px;
 
+    &__header {
+      display: flex;
+      margin-bottom: 10px;
+
+      span {
+        width: 20%;
+        text-align: center;
+      }
+    }
+    .winners-list {
+      margin: 0;
+      padding: 0;
+
+      &__header-wins {
+        cursor: pointer;
+      }
+
+      &__header-time {
+        cursor: pointer;
+      }
+
+      &__item {
+        display: flex;
+        margin-bottom: 10px;
+        list-style: none;
+
+        span, div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 20%;
+          height: 50px;
+        }
+
+        &-car {
+
+          svg {
+            width: 50px;
+            height: 50px;
+          }
+        }
+
+      }
+
+    }
+  }
 
 }
 
@@ -13,9 +67,12 @@
 
 &__item {
 
+  button {
+    margin: 5px 4px 5px 0px;
+  }
+
   .item__car-wrapper {
     position: relative;
-    // text-decoration: dashed;
     color: #32557f;
     text-decoration: none;
     border-bottom: 2px dashed #32557f;
@@ -23,31 +80,36 @@
     
     &-car {
       display: inline-block;
-      // transform: translateX(200px);
-      // transform: translateY(20px);
       transform: translate3d(0, 20px, 0);
       margin-top: auto;
-      // animation: 4s linear alternate race;
     }
 
     &-flag {
       display: inline-block;
       position: absolute;
-      right: 15%;
+      right: 22%;
       bottom: 0;
     }
 
   }
-
 }
 
 }
 
-// @keyframes race {
-//   from {
-//     transform: translate3d(0, 20px, 0);
-//   }
-//   to {
-//     transform: translate3d(500px, 20px, 0);
-//   }
-// }
+.show-modal {
+  display: none;
+
+  &__active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    color: #fff;
+    background-color: rgba($color: #000000, $alpha: 0.6);
+  }
+}

@@ -13,9 +13,11 @@ To use this app yoou need to download and start the server locally from [github 
 - Responsive design (320px support)
 - Winners table
 - Auto generate cars
+- JS animation (requestAnimationFrame)
 
 ## Stack
 - Typescript
 - SASS
+- Webpack
 - ESLint
 
